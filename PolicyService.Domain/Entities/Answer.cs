@@ -2,8 +2,8 @@
 {
     using System;
     
+    using MicroservicesPOC.Shared.Domain;
     using MicroservicesPOC.Shared.Common.Models;
-    using MicroservicesPOC.Shared.Common.Entities;
 
     public abstract class Answer : Entity<Guid>
     {

@@ -1,12 +1,12 @@
 ﻿namespace PolicyService.Domain.Entities
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     
+    using MicroservicesPOC.Shared.Domain;
     using MicroservicesPOC.Shared.Common.Models;
-    using MicroservicesPOC.Shared.Common.Entities;
+
     using PolicyService.Domain.Extensions;
 
     public class Policy : Entity<Guid>

@@ -9,8 +9,6 @@
 
     using RestEase;
     
-    using Steeltoe.Common.Discovery;
-    
     using Microsoft.Extensions.Configuration;
     
     using MicroservicesPOC.Shared.Common.Models;
@@ -18,6 +16,7 @@
     using PolicyService.Application.Common.Services;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
+    using System.Linq;
 
     public class PricingClient : IPricingClient
     {
@@ -26,13 +25,25 @@
             .Handle<HttpRequestException>()
             .WaitAndRetryAsync(retryCount: 3, sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(3));
 
-        public PricingClient(IConfiguration configuration, IDiscoveryClient discoveryClient)
+        public PricingClient(IConfiguration configuration, Consul.IConsulClient consulClient)
         {
-            DiscoveryHttpClientHandler handler = new DiscoveryHttpClientHandler(discoveryClient);
-            HttpClient httpClient = new HttpClient(handler, false) { BaseAddress = new Uri(configuration.GetValue<string>("PricingServiceUri")) };
+            //TODO: find better way to resolve hostname in http handler
+            string baseUrl = GetServiceUrl(consulClient, "PricingService");
+            string pricingServiceUrl = configuration.GetValue<string>("PricingServiceUri").Replace("PricingService", baseUrl);
+
+            HttpClient httpClient = new HttpClient() { BaseAddress = new Uri(pricingServiceUrl) };
             JsonSerializerSettings settings = new JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
             this._client = new RestClient(httpClient) { JsonSerializerSettings = settings }.For<IPricingClient>();
+        }
+
+        private string GetServiceUrl(Consul.IConsulClient consulClient, string requestedServiceName)
+        {
+            var services = consulClient.Agent.Services().Result;
+            Consul.AgentService service = services.Response.Values.FirstOrDefault(x => x.Service == requestedServiceName);
+
+            return (service != null) ? 
+                $"{service.Address}:{service.Port}" : throw new ArgumentNullException(nameof(service));
         }
 
         public Task<CalculatePriceResult> CalculatePrice([Body] CalculationData data) => 

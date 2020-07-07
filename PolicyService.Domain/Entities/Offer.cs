@@ -3,11 +3,10 @@
     using System;
     using System.Linq;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     
     
+    using MicroservicesPOC.Shared.Domain;
     using MicroservicesPOC.Shared.Common.Models;
-    using MicroservicesPOC.Shared.Common.Entities;
 
     //TODO: see is IAuditableEntity is more suitable 
     public class Offer : Entity<Guid>

@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
-    using MicroservicesPOC.Shared.Common.Entities;
+    using MicroservicesPOC.Shared.Domain;
 
     public class PolicyVersion : Entity<Guid>
     {

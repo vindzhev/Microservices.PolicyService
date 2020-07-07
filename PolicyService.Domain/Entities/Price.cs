@@ -1,10 +1,7 @@
 ﻿namespace PolicyService.Domain.Entities
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-
-    using MicroservicesPOC.Shared.Common.Entities;
 
     public class Price
     {

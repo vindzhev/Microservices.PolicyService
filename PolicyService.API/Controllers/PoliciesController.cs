@@ -5,8 +5,8 @@
     
     using Microsoft.AspNetCore.Mvc;
     
-    using MicroservicesPOC.Shared.Controllers;
     using MicroservicesPOC.Shared.Common.Models;
+    using MicroservicesPOC.Shared.API.Controllers;
     
     using PolicyService.Application.Policy.Queries;
     using PolicyService.Application.Policy.Commands;

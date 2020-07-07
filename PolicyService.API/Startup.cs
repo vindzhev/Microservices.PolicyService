@@ -6,13 +6,14 @@ namespace PolicyService.API
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
-    using Steeltoe.Discovery.Client;
     using Newtonsoft.Json.Serialization;
 
     using PolicyService.Application;
     using PolicyService.Infrastructure;
     using PolicyService.API.Extensions;
+
     using MicroservicesPOC.Shared.Extensions;
+    using MicroservicesPOC.Shared.API.Extensions;
 
     public class Startup
     {
@@ -23,7 +24,7 @@ namespace PolicyService.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDiscoveryClient(Configuration);
+            services.AddConsulConfig(Configuration);
 
             services
                 .AddApplication()
@@ -36,7 +37,6 @@ namespace PolicyService.API
                 .AddControllers(setupAction => setupAction.ReturnHttpNotAcceptable = true)
                 .AddNewtonsoftJson(setupAction =>
                 {
-                    //setupAction.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All;
                     setupAction.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     setupAction.SerializerSettings.Converters.Add(new QuestionAnswerConverter());
                 })
@@ -59,7 +59,7 @@ namespace PolicyService.API
 
             app.UseAuthorization();
 
-            app.UseDiscoveryClient();
+            app.UseConsul(Configuration);
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
