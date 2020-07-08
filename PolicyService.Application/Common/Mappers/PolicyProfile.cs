@@ -16,6 +16,8 @@
         public PolicyProfile()
         {
             this.CreateMap<PolicyVersion, PolicyDTO>()
+                .ForMember(x => x.Number, opt => opt.MapFrom(src => src.Policy.Number))
+                .ForMember(x => x.ProductCode, opt => opt.MapFrom(src => src.Policy.ProductCode))
                 .ForMember(x => x.DateFrom, opt => opt.MapFrom(src => src.CoverPeriod.ValidFrom))
                 .ForMember(x => x.DateTo, opt => opt.MapFrom(src => src.CoverPeriod.ValidTo))
                 .ForMember(x => x.PolicyHolder, opt => opt.MapFrom(src => $"{src.PolicyHolder.FirstName} {src.PolicyHolder.FirstName}"))

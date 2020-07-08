@@ -18,7 +18,13 @@
         public void Add(Policy policy) => this._context.Policies.Add(policy);
 
         public async Task<Policy> WithNumber(Guid number) =>
-            await this._context.Policies.FirstOrDefaultAsync(x => x.Number == number);
+            await this._context.Policies
+                .Include("Versions")
+                .Include("Versions.Covers")
+                .Include("Versions.CoverPeriod")
+                .Include("Versions.PolicyHolder")
+                .Include("Versions.VersionValidityPeriod")
+                .FirstOrDefaultAsync(x => x.Number == number);
 
         public async Task SaveChangesAsync() => await this._context.SaveChangesAsync();
     }

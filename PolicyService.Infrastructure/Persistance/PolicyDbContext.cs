@@ -3,7 +3,7 @@
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-    
+    using MicroservicesPOC.Shared.Domain;
     using Microsoft.EntityFrameworkCore;
     
     using PolicyService.Domain.Entities;
@@ -21,6 +21,10 @@
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //builder.Entity<Address>();
+
+            var elementMetadata = builder.Entity<Policy>().Metadata.FindNavigation(nameof(Policy.Versions));
+            elementMetadata.SetField("_versions");
+            elementMetadata.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 

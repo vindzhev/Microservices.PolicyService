@@ -36,7 +36,7 @@
 
         public string AgentLogin { get; private set; }
 
-        public IReadOnlyCollection<PolicyVersion> Versions => new ReadOnlyCollection<PolicyVersion>(this._versions);
+        public ICollection<PolicyVersion> Versions => new ReadOnlyCollection<PolicyVersion>(this._versions);
 
         public static Policy FromOffer(PolicyHolder policyHolder, Offer offer) => new Policy(policyHolder, offer);
 

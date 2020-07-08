@@ -26,6 +26,7 @@
             this.TotalPremiumAmount = this._covers.Sum(x => x.Premium);
         }
 
+        public Guid PolicyId { get; private set; }
         public Policy Policy { get; private set; }
 
         public int VersionNumber { get; private set; }
@@ -36,7 +37,7 @@
 
         public ValidityPeriod VersionValidityPeriod { get; private set; }
 
-        public IReadOnlyCollection<PolicyCover> Covers => new ReadOnlyCollection<PolicyCover>(this._covers);
+        public ICollection<PolicyCover> Covers => new ReadOnlyCollection<PolicyCover>(this._covers);
 
         public decimal TotalPremiumAmount { get; private set; }
 
