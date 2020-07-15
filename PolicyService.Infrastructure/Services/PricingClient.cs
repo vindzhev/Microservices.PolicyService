@@ -28,8 +28,8 @@
         public PricingClient(IConfiguration configuration, Consul.IConsulClient consulClient)
         {
             //TODO: find better way to resolve hostname in http handler
-            string baseUrl = GetServiceUrl(consulClient, "PricingService");
-            string pricingServiceUrl = configuration.GetValue<string>("PricingServiceUri").Replace("PricingService", baseUrl);
+            string baseUrl = GetServiceUrl(consulClient, "pricing-service");
+            string pricingServiceUrl = configuration.GetValue<string>("PricingServiceUri").Replace("pricing-service", baseUrl);
 
             HttpClient httpClient = new HttpClient() { BaseAddress = new Uri(pricingServiceUrl) };
             JsonSerializerSettings settings = new JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() };

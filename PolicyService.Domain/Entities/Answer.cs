@@ -3,7 +3,7 @@
     using System;
     
     using MicroservicesPOC.Shared.Domain;
-    using MicroservicesPOC.Shared.Common.Models;
+    using MicroservicesPOC.Shared.Domain.Enums;
 
     public abstract class Answer : Entity<Guid>
     {

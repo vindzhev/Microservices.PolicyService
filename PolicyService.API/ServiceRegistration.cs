@@ -1,6 +1,6 @@
 ﻿namespace PolicyService.API
 {
-    using MicroservicesPOC.Shared;
+    using MicroservicesPOC.Shared.Common;
 
     using Microsoft.Extensions.DependencyInjection;
 

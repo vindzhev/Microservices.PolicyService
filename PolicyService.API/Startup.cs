@@ -13,7 +13,7 @@ namespace PolicyService.API
     using PolicyService.API.Extensions;
 
     using MicroservicesPOC.Shared.Extensions;
-    using MicroservicesPOC.Shared.API.Extensions;
+    using MicroservicesPOC.Shared.API.ServiceDiscovery;
 
     public class Startup
     {
@@ -24,7 +24,7 @@ namespace PolicyService.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddConsulConfig(Configuration);
+            services.RegisterConsulServices(this.Configuration.GetServiceConfig());
 
             services
                 .AddApplication()
@@ -48,7 +48,10 @@ namespace PolicyService.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
+            {
+                app.UpdateDatabase();
                 app.UseDeveloperExceptionPage();
+            }
             else app.UseHsts();
 
             //app.UseCustomExceptionHandler();
@@ -58,8 +61,6 @@ namespace PolicyService.API
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.UseConsul(Configuration);
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }

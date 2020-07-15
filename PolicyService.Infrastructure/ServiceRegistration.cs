@@ -5,7 +5,8 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
-    using MicroservicesPOC.Shared;
+    using MicroservicesPOC.Shared.Common;
+    using MicroservicesPOC.Shared.Messaging;
 
     using PolicyService.Application.Common.Services;
     using PolicyService.Application.Common.Interfaces;
@@ -14,7 +15,7 @@
     using PolicyService.Infrastructure.Messaging;
     using PolicyService.Infrastructure.Persistance;
     using PolicyService.Infrastructure.Persistance.Repositories;
-    using MicroservicesPOC.Shared.Messaging;
+    using Microsoft.AspNetCore.Builder;
 
     public static class ServiceRegistration
     {
@@ -35,6 +36,14 @@
             services.AddConventionalServices(typeof(ServiceRegistration).Assembly);
 
             return services;
+        }
+
+        public static void UpdateDatabase(this IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            using var context = serviceScope.ServiceProvider.GetService<PolicyDbContext>();
+
+            context.Database.Migrate();
         }
     }
 }
